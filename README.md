@@ -2,6 +2,11 @@
 
 Docker container for "PCS3732 - Laboratory of Processors" course in Poli-USP with Ubuntu 16.04 image, able to run a 32-bit GCC version for the ARM architecture. Includes basic text editor, command aliases, and Evaluator-7T board support.
 
+# Useful links (from teacher)
+
+* [Subject page](https://www2.pcs.usp.br/~jkinoshi/2018/labmicro-18.html#orgheadline43)
+* [Blog with instructions](http://linux-kernel-lab.blogspot.com.br/2018/04/basics-on-arm-processor.html)
+
 # Usage
 
 ## Installation
