@@ -2,18 +2,19 @@
   .globl main
 
 main:
-  MOVS r1, #13  /* r1 = dividend */
-  MOVS r2, #2 /* r2= divisor */
+  MOVS r1, #27  /* r1 = dividend */
+  MOVS r2, #5 /* r2= divisor */
   MOVS r3, #0 /* r3 = quocient */
   BL alignDivisorLeft
 compare:
   CMP r5, #0
-  BEQ end
+  BMI end
   BL divide
   BL shiftDivisorRight
   SUB r5, r5, #1
   B compare
 end:
+  MOV r5, r1 /* r5 = remainder */
   SWI	0x0
 
 alignDivisorLeft:
