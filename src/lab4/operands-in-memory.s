@@ -8,6 +8,12 @@ main:
   MOVS r4, #10              @ r3 = 10
   MOVS r5, #5               @ r3 = 5
   STR r4, [r2, r5, LSL #2]
+  B pos
+pre:
   LDR r3, [r2, r5, LSL #2]
   ADDS r0, r3, r1
+pos:
+  ADDS r2, r2, r5, LSL #2
+  LDR r0, [r2]
+  ADDS r0, r0, r1
 end:
