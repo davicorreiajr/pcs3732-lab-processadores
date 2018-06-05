@@ -1,5 +1,5 @@
-.text
-.global main
+	.text
+	.global main
 
 @ for (i = 0; i <= 10; i++) {
 @		a[i] = b[i] + c;
@@ -9,8 +9,8 @@
 @ r3 = i = 0
 @ r4 = c = 5
 main:
-	MOVS r1, 0x100
-	MOVS r2, 0x200
+	MOVS r1, #0x100
+	MOVS r2, #0x200
 	MOVS r3, #0
 	MOVS r4, #5
 loop:
