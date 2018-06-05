@@ -11,6 +11,6 @@ loop:
   RSB r3, r0, #7 /* 7 - i */
   LDR r4, [r2, r3, LSL #2]
   STR r4, [r2, r0]
-  ADDS, r0, r0, #1
+  ADDS r0, r0, #1
   B loop
 end:
