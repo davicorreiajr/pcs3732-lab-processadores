@@ -3,11 +3,11 @@
 
 main:
   MOVS r0, #31
-  MOVS r1, #0x5006
+  LDR r1, =0x5006
   STR r0, [r1]
 
   MOVS r0, #512
-  MOVS r1, #0x500A
+  LDR r1, =0x500A
   STR r0, [r1]
 
   LDR r0, =3145
@@ -52,7 +52,7 @@ loop:
   BGE end
   LDR r4, [r2], #4    @ r4 = valor em 0x5006
   CMP r4, r3
-  MOVSGT r3, r4
+  MOVGT r3, r4
   ADDS r0, r0, #1
   B loop
 end:
