@@ -10,42 +10,42 @@ main:
   MOVS r1, #0x500A
   STR r0, [r1]
 
-  MOVS r0, #3145
-  MOVS r1, #0x500E
+  LDR r0, =3145
+  LDR r1, =0x500E
   STR r0, [r1]
 
-  MOVS r0, #1
-  MOVS r1, #0x5012
+  LDR r0, =1
+  LDR r1, =0x5012
   STR r0, [r1]
 
-  MOVS r0, #6431235
-  MOVS r1, #0x5016
+  LDR r0, =6431235
+  LDR r1, =0x5016
   STR r0, [r1]
 
-  MOVS r0, #231
-  MOVS r1, #0x501A
+  LDR r0, =231
+  LDR r1, =0x501A
   STR r0, [r1]
 
-  MOVS r0, #31234
-  MOVS r1, #0x501E
+  LDR r0, =31234
+  LDR r1, =0x501E
   STR r0, [r1]
 
-  MOVS r0, #312
-  MOVS r1, #0x5022
+  LDR r0, =312
+  LDR r1, =0x5022
   STR r0, [r1]
 
-  MOVS r0, #31123
-  MOVS r1, #0x5026
+  LDR r0, =31123
+  LDR r1, =0x5026
   STR r0, [r1]
 
 
 
 
-  MOVS r5, #9                 @ r5 = 9
-  MOVS r0, #0                 @ r0 = 0
-  MOVS r1, #0x5000            @ r1 = 0x5000
-  MOVS r2, #0x5006            @ r2 = 0x5006
-  MOVS r3, #0                 @ r3 = 0
+  LDR r5, =9                 @ r5 = 9
+  LDR r0, =0                 @ r0 = 0
+  LDR r1, =0x5000            @ r1 = 0x5000
+  LDR r2, =0x5006            @ r2 = 0x5006
+  LDR r3, =0                 @ r3 = 0
   
 loop:
   CMP r0, r5
