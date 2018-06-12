@@ -143,3 +143,14 @@ eabi-qemu -se program.elf
 pkill qemu
 ```
 
+
+Usefull links:
+
+https://www2.pcs.usp.br/~jkinoshi/2018/labmicro-18.html
+
+http://courses.cs.tamu.edu/rabi/cpsc617/resources/ARM%20Lab%20Mannual.pdf
+
+http://infocenter.arm.com/help/topic/com.arm.doc.qrc0001l/QRC0001_UAL.pdf
+
+http://www.davespace.co.uk/arm/introduction-to-arm/conditional.html
+
