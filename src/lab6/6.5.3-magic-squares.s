@@ -8,7 +8,7 @@ main:
  ADD r2, r2, #1           /* r2 = N^2 + 1 */
  MUL r2, r1, r2 			    /* r2 = N(N^2 + 1) */
  MOV r2, r2, LSR #1		    /* r2 = N(N^2 + 1)/2 */
- MOV r9, 0
+ MOV r9, #0
 
 row:
  MOV r3, r0
@@ -39,8 +39,10 @@ columnSubLoop:
  ADD r4, r4, r12
  LDR r5, [r4]
  ADD r6, r6, r5
+ ADD r10, #1
  CMP r10, r1
  BMI columnSubLoop
+ ADD r11, #1
  CMP r6, r2
  BEQ columnLoop
  B final
@@ -50,7 +52,7 @@ diagonals:
 
 
 final:
- SWI 0x0
+ MOV r1, r2
 
 
 
