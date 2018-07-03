@@ -4,11 +4,11 @@
 
 main:
   LDR r7, =8988880  /* r7 = dividend = nusp 8988880 */
-  LDR r6, =80000 @ r6 = base address of primes
-  MOVS r8, #1
+  LDR r3, =8988880 @ r3 = quocient starts with 8988880
+  LDR r6, =0x8000 @ r6 = base address of primes
+  MOVS r8, #2 @ r8 = divisor
+  MOVS r1, r3
 comeco:
-  MOVS r1, r7
-  ADDS r8, r8, #1 @ r8 = r8 + 1
   MOVS r2, r8 @ r2 = r8 = divisor
   MOVS r3, #0 /* r3 = quocient */
   CMP r1, r2
@@ -22,13 +22,13 @@ compare:
   SUB r5, r5, #1
   B compare
 final:
-  MOVS r5, r1 /* r5 = remainder */
-  MOVS r5, #0
-  MOVS r8, #1
-  MVN r5, #0
-  CMP r1, r5
-  BEQ comeco
-  STMIB r6, {r8}
+  MOVS r9, #0
+  CMP r1, r9 @ r1 = remainder e r9 = 0
+  ADDNE r8, r8, #1 @ r8 = r8 + 1
+  BNE comeco
+adicionaNaMemoria:
+  STMIB r6!, {r8}
+  MOVS r1, r3 @ r1 dividend used receives r3 (previous quocient)
   B comeco
   SWI	0x0
 
