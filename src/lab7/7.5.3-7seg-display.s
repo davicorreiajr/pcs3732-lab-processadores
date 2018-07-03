@@ -6,8 +6,12 @@ main:
   LDR r3, =0x3FF5008      @ r3 = IOPDATA
   LDR	r1, =0xfe00	        @ seta 1 nos bits [16:10]
   STR	r1, [r0]	          @ seta IOPMOD como output
-  MOV r2, #0x0            @ r2 = 0
-seta:
+  LDR r6, =0x4000
+  MOV r7, #11
+  STR r7, [r6]
+seg_display:
+  LDR r2, [r6]            @ r2 = MEM[r6] (r2 = 0x4000)
+map:
   CMP r2, #0x0
   BEQ hex0
   CMP r2, #0x1
@@ -40,20 +44,23 @@ seta:
   BEQ hexE
   CMP r2, #0xf
   BEQ hexF
+seta:
   STR r5, [r3]            @ IOPDATA recebe numero a ser mostrado
-  LDR r4, =0xffffffff
-  BL loop
-  ADDS r2, r2, #0x1      @ r2 = r2 + 0x1
-  CMP r2, #0xf
-  BNE seta
-  MOV r2, #0x0
-  BL seta
-loop:
-  SUBS r4, r4, #1
-  CMP r4, #0
-  BNE loop
-fim_loop:
-  MOV pc, lr
+  MOVS r0, #0
+  SWI 0x0
+@   LDR r4, =0xffffffff
+@   BL loop
+@   ADDS r2, r2, #0x1      @ r2 = r2 + 0x1
+@   CMP r2, #0xf
+@   BNE seta
+@   MOV r2, #0x0
+@   BL seta
+@ loop:
+@   SUBS r4, r4, #1
+@   CMP r4, #0
+@   BNE loop
+@ fim_loop:
+@   MOV pc, lr
 
 hex0:
   LDR r5, =0b1111110
