@@ -2,8 +2,8 @@
   .globl main
 
 main:
-  MOVS r1, #100  /* r1 = dividend */
-  MOVS r2, #9 /* r2= divisor */
+  LDR r1, =9347991  /* r1 = dividend */
+  LDR r2, =2 /* r2= divisor */
   MOVS r3, #0 /* r3 = quocient */
   CMP r1, r2
   BCC end
