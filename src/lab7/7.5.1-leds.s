@@ -9,15 +9,15 @@ main:
   MOV r2, #0x0            @ r2 = 0
 seta_asc:
   STR r2, [r3]            @ IOPDATA recebe numero a ser mostrado
-  LDR r4, =0xffffffff
+  LDR r4, =0xfffff
   BL loop
   ADDS r2, r2, #0x10      @ r2 = r2 + 0x10
   CMP r2, #0xf0
   BNE seta_asc
-MOV r2, #0xf0            @ r2 = 0
+  MOV r2, #0xf0            @ r2 = 0
 seta_desc:
   STR r2, [r3]            @ IOPDATA recebe numero a ser mostrado
-  LDR r4, =0xffffffff
+  LDR r4, =0xfffff
   BL loop
   SUBS r2, r2, #0x10      @ r2 = r2 + 0x10
   CMP r2, #0xf0
