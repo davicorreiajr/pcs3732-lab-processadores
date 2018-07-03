@@ -6,7 +6,7 @@ main:
   LDR	r1, =0xfe00	        @ seta 1 nos bits [16:10]
   STR	r1, [r0]	          @ seta IOPMOD como output
   LDR r6, =0x4000
-  MOV r7, #11
+  MOV r7, #8
   STR r7, [r6]
 seg_display:
   LDR r2, [r6]            @ r2 = MEM[r6] (r2 = 0x4000)

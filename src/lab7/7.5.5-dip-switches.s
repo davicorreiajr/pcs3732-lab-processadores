@@ -12,4 +12,4 @@ loop:
   STR r2, [r3]            @ IOPDATA recebe numero a ser mostrado
   B loop
 end:
-  MOVS s0, s0, #2
+  MOVS r0, #0
