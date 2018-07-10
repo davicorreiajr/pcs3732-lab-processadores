@@ -1,15 +1,13 @@
 	.file	"imprime-pre.c"
 	.section	.rodata
 	.align	2
-.LC0:
-	.ascii	"numero = %d\n\000"
 	.global	str
 	.data
 	.align	2
 	.type	str, %object
 	.size	str, 4
 str:
-	.word	.LC0
+	.ascii	"numero = %d\n\000"
 	.text
 	.align	2
 	.global	imprime
