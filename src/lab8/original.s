@@ -1,15 +1,8 @@
-	.file	"imprime-pre.c"
+	.file	"original.c"
 	.section	.rodata
 	.align	2
 .LC0:
 	.ascii	"numero = %d\n\000"
-	.global	str
-	.data
-	.align	2
-	.type	str, %object
-	.size	str, 4
-str:
-	.word	.LC0
 	.text
 	.align	2
 	.global	imprime
@@ -28,15 +21,18 @@ imprime:
 	mov	r0, #1
 	bl	exit
 .L2:
-	ldr	r0, =str
+	ldr	r0, .L3
 	ldr	r1, [fp, #-16]
 	bl	printf
-	
 	ldr	r3, [fp, #-16]
 	sub	r3, r3, #1
 	mov	r0, r3
 	bl	imprime
 	ldmfd	sp, {r3, fp, sp, pc}
+.L4:
+	.align	2
+.L3:
+	.word	.LC0
 	.size	imprime, .-imprime
 	.align	2
 	.global	main
