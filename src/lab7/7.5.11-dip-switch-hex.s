@@ -21,7 +21,7 @@ loop:
   BL print_in_hex
   B loop
 end:
-  MOVS s0, s0, #2
+  MOVS r0, #0
 
 
 @ retorna em r7 o valor do 4o switch, 1 ou 0
