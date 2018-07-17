@@ -4,6 +4,7 @@
 char *str = "numero = %d\n";
 
 void imprime(int n) {
+  int lixo = 0;
   if (n < 0) {
       exit(1);
   }
@@ -12,7 +13,7 @@ void imprime(int n) {
 	"ldr	r1, [fp, #-16]\n\t"
 	"bl	printf\n\t"
   );
-
+  lixo++;
   imprime(n-1);
 }
 

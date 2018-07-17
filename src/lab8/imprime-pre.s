@@ -1,11 +1,6 @@
 	.file	"imprime-pre.c"
 	.section	.rodata
 	.align	2
-	.global	str
-	.data
-	.align	2
-	.type	str, %object
-	.size	str, 4
 str:
 	.ascii	"numero = %d\n\000"
 	.text
@@ -13,13 +8,15 @@ str:
 	.global	imprime
 	.type	imprime, %function
 imprime:
-	@ args = 0, pretend = 0, frame = 4
+	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {fp, ip, lr, pc}
 	sub	fp, ip, #4
-	sub	sp, sp, #4
+	sub	sp, sp, #8
 	str	r0, [fp, #-16]
+	mov	r3, #0
+	str	r3, [fp, #-20]
 	ldr	r3, [fp, #-16]
 	cmp	r3, #0
 	bge	.L2
@@ -30,11 +27,15 @@ imprime:
 	ldr	r1, [fp, #-16]
 	bl	printf
 	
+	ldr	r3, [fp, #-20]
+	add	r3, r3, #1
+	str	r3, [fp, #-20]
 	ldr	r3, [fp, #-16]
 	sub	r3, r3, #1
 	mov	r0, r3
 	bl	imprime
-	ldmfd	sp, {r3, fp, sp, pc}
+	sub	sp, fp, #12
+	ldmfd	sp, {fp, sp, pc}
 	.size	imprime, .-imprime
 	.align	2
 	.global	main
