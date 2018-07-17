@@ -10,4 +10,7 @@ de memória no arquivo de saída.
 3.2 inclui a seção INTERRUPT_VECTOR do arquivo startup.o
 3.3 stack_top recebe a variável especial "."; essa variável, chamada de location counte, guarda a posição no arquivo de saída.
 Assim, stack_top (o topo da pilha) começa a partir de uma região de memória "útil" do arquivo de saída
-3.4 
+3.4 .bss são partes dos object files que contem variável estaticamente alocadas e que não inicializam explicitamente nenhum valor.
+O "COMMON" se refere aos símbolos comuns que normalmente ficam dentro da seção .bss dos arquivos de entrada; assim, esta linha
+pega todos os símbolos comuns presentes nas seções .bss dos arquivos de entrada e coloca dentro da seção .bss do arquivo de saída.
+(o * é um padrão wildcard, que pega todos os arquivos de entrada)
