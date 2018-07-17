@@ -2,7 +2,7 @@
 .global _Reset
 _Reset:
   B Reset_Handler /* Reset */
-  B . /* Undefined */
+  B Undefined_Handler /* Undefined */
   B . /* SWI */
   B . /* Prefetch Abort */
   B . /* Data Abort */
@@ -28,7 +28,7 @@ Reset_Handler:
   B .
 
 Undefined_Handler:
-  LDR sp, =stack_top
-  BL undefined
-  LDMFD sp!,{R0-R12,pc}^
   B .
+  STMFD sp!, {R0-R12, lr}
+  BL undefined
+  LDMFD sp!, {R0-R12, pc}^
