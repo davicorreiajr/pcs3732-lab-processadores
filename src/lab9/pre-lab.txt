@@ -1,0 +1,13 @@
+1. não achei
+
+2. qual código? Tentamos o startup.s e não conseguimos
+
+3. test.ld é um "linker script"; basicamente, ele combina arquivos de entrada (object files) em arquivos de saída.
+Sua principal função é dizer como estes arquivos de entrada serão combinados no arquivo de saída e, também, controlar a alocação
+de memória no arquivo de saída.
+
+3.1 ENTRY diz qual a primeira instrução a ser executada, no caso, é _Reset
+3.2 inclui a seção INTERRUPT_VECTOR do arquivo startup.o
+3.3 stack_top recebe a variável especial "."; essa variável, chamada de location counte, guarda a posição no arquivo de saída.
+Assim, stack_top (o topo da pilha) começa a partir de uma região de memória "útil" do arquivo de saída
+3.4 
