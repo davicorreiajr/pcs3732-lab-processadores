@@ -14,3 +14,4 @@ Assim, stack_top (o topo da pilha) começa a partir de uma região de memória "
 O "COMMON" se refere aos símbolos comuns que normalmente ficam dentro da seção .bss dos arquivos de entrada; assim, esta linha
 pega todos os símbolos comuns presentes nas seções .bss dos arquivos de entrada e coloca dentro da seção .bss do arquivo de saída.
 (o * é um padrão wildcard, que pega todos os arquivos de entrada)
+3.5 o location counter (o .) é incrementado em 4096 bytes (representado pelo número 0x1000 em hexadecimal).
