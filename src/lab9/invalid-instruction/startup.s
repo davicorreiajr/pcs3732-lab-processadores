@@ -23,12 +23,11 @@ Reset_Handler:
   MSR cpsr, r0 @ volta para o modo anterior
 
   LDR sp, =stack_top
-  BL c_entry
   .word 0xffffffff
+  BL c_entry
   B .
 
 Undefined_Handler:
-  B .
   STMFD sp!, {R0-R12, lr}
   BL undefined
   LDMFD sp!, {R0-R12, pc}^

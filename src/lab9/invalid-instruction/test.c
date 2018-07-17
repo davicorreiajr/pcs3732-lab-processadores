@@ -8,10 +8,9 @@ void print_uart0(const char *s) {
 }
  
 void c_entry() {
- print_uart0("Hello world!\n");
+ print_uart0("Hello World\n");
 }
 
 void undefined () {
  print_uart0("instrucao invalida!\n");
- while (1) {}
 }
