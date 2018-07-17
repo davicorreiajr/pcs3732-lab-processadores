@@ -1,4 +1,4 @@
-1. não achei
+1. não achamos na documentação da arm um valor default; no entanto, este endereço pode ser definido no script do linker
 
 2. qual código? Tentamos o startup.s e não conseguimos
 
