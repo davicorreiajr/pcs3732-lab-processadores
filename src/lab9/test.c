@@ -1,3 +1,3 @@
-int c_entry() {
+int main() {
   return 0;
 }
