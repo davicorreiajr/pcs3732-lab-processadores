@@ -34,12 +34,12 @@ SoftwareInterruptHandler:
 	mov pc, r14 @volta p/ o endereço armazenado em r14
 
 IRQHandler:
+	SUB lr, lr, #4
 	STMFD sp!, {R0-R12, lr}
 	LDR r0, INTPND @Carrega o registrador de status de interrupção
 	LDR r0, [r0]
 	TST r0, #0x0010 @verifica se é uma interupção de timer
 	BLNE handlerTimer @vai para o rotina de tratamento da interupção de timer
-	SUB lr, lr, #4
 	LDMFD sp!, {R0-R12, pc}^
 
 handlerTimer:
@@ -61,7 +61,7 @@ timerInit:
 	msr cpsr_c,r0 @enabling interrupts in the cpsr
 	LDR r0, INTEN
 	LDR r1,=0x10 @bit 4 for timer 0 interrupt enable
-	STR r1,[r0]
+	@STR r1,[r0]
 	LDR r0, TIMER0C
 	LDR r1, [r0]
 	MOV r1, #0xA0 @enable timer module
