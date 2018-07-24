@@ -9,3 +9,10 @@ limpando o pedido de interrupção para evitar que a execução permaneça em lo
 A quinta parte permite que uma interrupção do timer ocorra, por exemplo,
 permitindo interrupções do tipo IRQ e habilitando interrupções do timer.
 E por fim, a main, que chama o código de inicialização do timer.
+
+– Como o timer eh programado? Como se define o intervalo entre interrupcoes?
+
+– Para que servem os registradores do timer e onde sao utilizados no programa (inicializacao no progama principal ou interrupt handler)?
+TimerControl: Utilizado para configurar o modo de operação do timer, ativá-lo e habilitar interrupções.
+TimerValue: Permite ler ou escrever o valor atual do timer. A interrupção é acionada quando este valor chega a 0.
+TimerIntClr: Utilizado para limpar o pedido de interrupção durante a rotina de tratamento. Basta escrever nesse registrador para que o pedido seja encerrado
