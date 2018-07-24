@@ -38,7 +38,7 @@ IRQHandler:
 	LDR r0, INTPND @Carrega o registrador de status de interrupção
 	LDR r0, [r0]
 	TST r0, #0x0010 @verifica se é uma interupção de timer
-	BNE handlerTimer @vai para o rotina de tratamento da interupção de timer
+	BLNE handlerTimer @vai para o rotina de tratamento da interupção de timer
 	SUB lr, lr, #4
 	LDMFD sp!, {R0-R12, pc}^
 
@@ -49,8 +49,7 @@ handlerTimer:
 
 	@ Inserir código que sera executado na interrupção de timer aqui (chaveamento de processos, ou alternar LED por exemplo)
 
-	LDMFD sp!, {r0 - r3,lr}
-	mov pc, r14 @retorna
+	mov pc, lr
 
 main:
 	BL timerInit @initialize interrupts and timer 0
