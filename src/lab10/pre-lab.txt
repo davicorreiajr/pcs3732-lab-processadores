@@ -1,0 +1,8 @@
+– Comente as partes em que o código está dividido e o que faz cada parte
+Primeiro, é definido o vetor de interrupção, ou seja, qual handler
+será chamado em cada tipo de interrupção.
+O segundo arquivo contém a definição de algumas constantes, basicamente
+os endereços dos registradores de controle de interrupção e de timers.
+A terceira parte implementa cada um dos handlers.
+A quarta parte lida com uma interrupção do timer, basicamente
+limpando o pedido de interrupção para evitar que a execução permaneça em loop.
