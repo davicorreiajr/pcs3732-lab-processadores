@@ -6,3 +6,6 @@ os endereços dos registradores de controle de interrupção e de timers.
 A terceira parte implementa cada um dos handlers.
 A quarta parte lida com uma interrupção do timer, basicamente
 limpando o pedido de interrupção para evitar que a execução permaneça em loop.
+A quinta parte permite que uma interrupção do timer ocorra, por exemplo,
+permitindo interrupções do tipo IRQ e habilitando interrupções do timer.
+E por fim, a main, que chama o código de inicialização do timer.
