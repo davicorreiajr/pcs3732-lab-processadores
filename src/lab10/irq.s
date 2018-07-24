@@ -2,13 +2,13 @@
 .text
 _start:
 	B Reset @posição 0x00 - Reset
-	B UndefinedHandler @posição 0x04 - Intrução não-definida
-	B . /* SWI */
-  B . /* Prefetch Abort */
-  B . /* Data Abort */
-  B . /* reserved */
-  B IRQHandler
-  B . /* FIQ */
+	B UndefinedHandler @posição 0x04 - Instrução não-definida
+	B SoftwareInterruptHandler @posição 0x08 - software interrupt
+	B . /* Prefetch Abort */
+	B . /* Data Abort */
+	B . /* reserved */
+	B IRQHandler
+	B . /* FIQ */
 
 Reset:
 	@setando os valores de IRQ
@@ -39,7 +39,7 @@ IRQHandler:
 	LDR r0, [r0]
 	TST r0, #0x0010 @verifica se é uma interupção de timer
 	BNE handlerTimer @vai para o rotina de tratamento da interupção de timer
-	SUB lr, #4
+	SUB lr, lr, #4
 	LDMFD sp!, {R0-R12, pc}^
 
 handlerTimer:
