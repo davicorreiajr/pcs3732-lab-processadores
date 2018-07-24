@@ -21,3 +21,6 @@ TIMER0V: valor a ser escrito no timer -> inicializacao do timer
 INTPND: endereço para o status/tipo da interrupção -> handler do vetor de interrupção
 INTEN: usado para habilitar interrupção do timer -> inicialização do timer
 INTSEL: habilita interrupções IRQ ou FIQ -> não usado
+
+– O que significa:
+Habilita interrupções do timer
