@@ -13,6 +13,6 @@ E por fim, a main, que chama o código de inicialização do timer.
 – Como o timer eh programado? Como se define o intervalo entre interrupcoes?
 
 – Para que servem os registradores do timer e onde sao utilizados no programa (inicializacao no progama principal ou interrupt handler)?
-TimerControl: Utilizado para configurar o modo de operação do timer, ativá-lo e habilitar interrupções.
-TimerValue: Permite ler ou escrever o valor atual do timer. A interrupção é acionada quando este valor chega a 0.
-TimerIntClr: Utilizado para limpar o pedido de interrupção durante a rotina de tratamento. Basta escrever nesse registrador para que o pedido seja encerrado
+TIMER0X: "pedido" de interrupção do timer -> handler
+TIMER0C: habilita a execução do timer -> inicializacao
+TIMER0V: valor a ser escrito no timer -> inicializacao
