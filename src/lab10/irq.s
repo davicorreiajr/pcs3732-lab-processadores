@@ -64,6 +64,7 @@ do_irq_interrupt: @Rotina de interrupções IRQ
 	LDR r0, [r0]
 	TST r0, #0x0010 @verifica se é uma interupção de timer
 	BNE handler_timer @vai para o rotina de tratamento da interupção de timer
+	SUB lr, #4
 	LDMFD sp!, {R0-R12, pc}^
 
 handler_timer:
