@@ -46,7 +46,8 @@ IRQHandler:
 main:
 	BL c_entry
 	BL timerInit @initialize interrupts and timer 0
-stop: 
+stop:
+	BL wait
 	BL print_espaco
 	b stop
 

@@ -20,3 +20,8 @@ void c_entry() {
 void print_espaco() {
  print_uart0(" ");
 }
+
+void wait() {
+    int i = 10000;
+    while (--i < 0){}
+}
