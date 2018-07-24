@@ -1,4 +1,4 @@
-.global _start
+.global handlerTimer
 .text
 
 handlerTimer:
