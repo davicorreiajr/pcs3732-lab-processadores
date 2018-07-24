@@ -19,6 +19,17 @@ _start:
 @_fiq: .word fiq
 
 _Reset:
+	@setando os valores de IRQ
+	MRS r0, cpsr    @ salvando o modo corrente em R0
+	MSR cpsr_ctl, #0b11010010 @ alterando o modo para IRQ - o SP eh automaticamente chaveado ao chavear o modo
+	LDR sp, =0x2000 @ a pilha de IRQ eh setada 
+	MSR cpsr, r0 @ volta para o modo anterior
+	@setando os valores de FIQ
+	MRS r0, cpsr    @ salvando o modo corrente em R0
+	MSR cpsr_ctl, #0b11010001 @ alterando o modo para FIQ - o SP eh automaticamente chaveado ao chavear o modo
+	LDR sp, =0x1000 @ a pilha do FIQ eh setada 
+	MSR cpsr, r0 @ volta para o modo anterior
+
 	bl main
 	b .
 
@@ -43,18 +54,17 @@ _irq:
 _fiq:
  	b .
 
-_do_software_interrupt: @Rotina de Interrupçãode software
+do_software_interrupt: @Rotina de Interrupçãode software
 	add r1, r2, r3 @r1 = r2 + r3
 	mov pc, r14 @volta p/ o endereço armazenado em r14
 
-_do_irq_interrupt: @Rotina de interrupções IRQ
-	STMFD sp!, {r0 - r3, LR} @Empilha os registradores
+do_irq_interrupt: @Rotina de interrupções IRQ
+	STMFD sp!, {R0-R12, lr}
 	LDR r0, INTPND @Carrega o registrador de status de interrupção
 	LDR r0, [r0]
 	TST r0, #0x0010 @verifica se é uma interupção de timer
 	BNE handler_timer @vai para o rotina de tratamento da interupção de timer
-	LDMFD sp!, {r0 - r3,lr} @retorna
-	mov pc, r14
+	LDMFD sp!, {R0-R12, pc}^
 
 handler_timer:
 	LDR r0, TIMER0X
@@ -81,6 +91,10 @@ timer_init:
 	MOV r1, #0xff @setting timer value
 	STR r1,[r0]
 	mov pc, lr
+
+main:
+	bl timer_init @initialize interrupts and timer 0
+stop: b stop
 
 INTPND: .word 0x10140000 @Interrupt status register
 INTSEL: .word 0x1014000C @interrupt select register( 0 = irq, 1 = fiq)
