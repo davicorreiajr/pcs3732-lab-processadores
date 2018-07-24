@@ -42,14 +42,6 @@ IRQHandler:
 	BLNE handlerTimer @vai para o rotina de tratamento da interupção de timer
 	LDMFD sp!, {R0-R12, pc}^
 
-handlerTimer:
-	LDR r0, TIMER0X
-	MOV r1, #0x0
-	STR r1, [r0] @Escreve no registrador TIMER0X para limpar o pedido de interrupção
-
-	@ Inserir código que sera executado na interrupção de timer aqui (chaveamento de processos, ou alternar LED por exemplo)
-
-	mov pc, lr
 
 main:
 	BL timerInit @initialize interrupts and timer 0
