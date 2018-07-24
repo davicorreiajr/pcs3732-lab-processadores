@@ -13,6 +13,8 @@ E por fim, a main, que chama o código de inicialização do timer.
 – Como o timer eh programado? Como se define o intervalo entre interrupcoes?
 
 – Para que servem os registradores do timer e onde sao utilizados no programa (inicializacao no progama principal ou interrupt handler)?
-TIMER0X: "pedido" de interrupção do timer -> handler
-TIMER0C: habilita a execução do timer -> inicializacao
-TIMER0V: valor a ser escrito no timer -> inicializacao
+TIMER0X: "pedido" de interrupção do timer -> handler do timer
+TIMER0C: habilita a execução do timer -> inicializacao do timer
+TIMER0V: valor a ser escrito no timer -> inicializacao do timer
+
+– Para que servem os registradores da controladora de interrupcao e onde sao utilizados no programa (inicializacao no progama principal ou interrupt handler)?
