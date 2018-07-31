@@ -159,5 +159,5 @@ TIMER0L: .word 0x101E2000 @Timer 0 load register
 TIMER0V: .word 0x101E2004 @Timer 0 value registers
 TIMER0C: .word 0x101E2008 @timer 0 control register
 TIMER0X: .word 0x101E200c @timer 0 clear register
-nextProcess: .word #1
-currentProcess: .word #1
+nextProcess: .word 0x1
+currentProcess: .word 0x1
