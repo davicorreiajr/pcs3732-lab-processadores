@@ -34,22 +34,49 @@ SoftwareInterruptHandler:
 	mov pc, r14 @volta p/ o endereço armazenado em r14
 
 IRQHandler:
-	SUB lr, lr, #4
-	STMFD sp!, {R0-R12, lr}
+	@ SUB lr, lr, #4
+	@ STMFD sp!, {R0-R12, lr}
+
+	B saveRegisters
+saveRegistersReturn:
+	LDR r0, currentProcess
+	LDR r1, nextProcess
+	STR r1, currentProcess
+	STR r0, nextProcess
+
+	LDR r0, TIMER0X
+	MOV r1, #0x0
+	STR r1, [r0]
+
 	LDR r0, INTPND @Carrega o registrador de status de interrupção
 	LDR r0, [r0]
-	TST r0, #0x0010 @verifica se é uma interupção de timer
-	BLNE handlerTimer @vai para o rotina de tratamento da interupção de timer
-	LDMFD sp!, {R0-R12, pc}^
+	TST r0, #0x0010
 
+	B loadRegisters
+	
+	@ LDR r0, INTPND @Carrega o registrador de status de interrupção
+	@ LDR r0, [r0]
+	@ TST r0, #0x0010 @verifica se é uma interupção de timer
+	@ BLNE handlerTimer @vai para o rotina de tratamento da interupção de timer
+	
+	@ LDMFD sp!, {R0-R12, pc}^
 
 main:
-	BL c_entry
+	LDR r0, =linhaA
+	LDR r1, =linhaB
+	LDR r3, =currentProcess
+	LDR r4, =nextProcess
+	STR r0, [r3]
+	STR r1, [r4]
+
 	BL timerInit @initialize interrupts and timer 0
-stop:
-	BL wait
-	BL print_espaco
-	b stop
+
+	loadRegisters(A)
+@ stop:
+@ 	BL wait
+@ 	BL print_espaco
+	@ b stop
+
 
 timerInit:
 	mrs r0, cpsr
@@ -67,9 +94,48 @@ timerInit:
 	STR r1,[r0]
 	mov pc, lr
 
+saveRegisters:
+	SUB lr, lr, #4
+	STR r0, currentProcess
+
+	LDR r0, currentProcess
+	ADD r0, r0, #4
+
+	STMIA r0!, {r1-r12}
+	STMIA r0!, {lr, spsr}	@ pc e cpsr do programa principal
+	
+	MRS r1, cpsr   		 				@ salvando o modo corrente em R0
+	MSR cpsr_ctl, #0b11010011 @ alterando o modo para supervisor
+	STMIA r0!, {lr, sp} 			@ lr e sp do programa principal
+	MSR cpsr, r1 							@ volta para o modo anterior
+
+	B saveRegistersReturn
+
+loadRegisters:
+	LDR r0, currentProcess
+
+	MRS r3, cpsr
+	MSR cpsr_ctl, #0b11010011 				@ alterando o modo para supervisor
+	LDR r2, [r0, #60]
+	MOV lr, r2
+	LDR r2, [r0, #64]
+	MOV sp, r2
+	MSR cpsr, r3
+
+	LDR r1, [r0, #56]
+	MSR spsr_cxsf, r1
+	
+	LDMFD r0, {R0-R12, pc}^
+	
+linhaA: .space 68
+linhaB: .space 68
+
 INTPND: .word 0x10140000 @Interrupt status register
 INTSEL: .word 0x1014000C @interrupt select register( 0 = irq, 1 = fiq)
 INTEN: .word 0x10140010 @interrupt enable register
 TIMER0L: .word 0x101E2000 @Timer 0 load register
 TIMER0V: .word 0x101E2004 @Timer 0 value registers
 TIMER0C: .word 0x101E2008 @timer 0 control register
+TIMER0X: .word 0x101E200c @timer 0 clear register
+nextProcess: .word
+currentProcess: .word
