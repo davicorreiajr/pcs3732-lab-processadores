@@ -69,9 +69,26 @@ main:
 	STR r0, [r3]
 	STR r1, [r4]
 
+	LDR r5, =p1
+	MRS r6, cpsr
+	LDR r7, =stackP1
+
+	STR r5, [r0, #52]
+	STR r6, [r0, #56]
+	STR r7, [r0, #64]
+
+	LDR r5, =p2
+	MRS r6, cpsr
+	LDR r7, =stackP2
+
+	STR r5, [r1, #52]
+	STR r6, [r1, #56]
+	STR r7, [r1, #64]
+
+
 	BL timerInit @initialize interrupts and timer 0
 
-	loadRegisters(A)
+	
 @ stop:
 @ 	BL wait
 @ 	BL print_espaco

@@ -25,3 +25,11 @@ void wait() {
     int i = 10000;
     while (--i < 0){}
 }
+
+void p1() {
+    while(1) print_uart0("1");
+}
+
+void p2() {
+    while(1) print_uart0("2");
+}
