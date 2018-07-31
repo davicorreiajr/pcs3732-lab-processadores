@@ -22,6 +22,6 @@ void print_espaco() {
 }
 
 void wait() {
-    int i = 10000;
+    int i = 50000;
     while (--i < 0){}
 }
