@@ -75,7 +75,7 @@ main:
 
 	STR r5, [r0, #52]
 	STR r6, [r0, #56]
-	STR r7, [r0, #64]
+	STR r7, [r0, #60]
 
 	LDR r5, =p2
 	MRS r6, cpsr
@@ -83,7 +83,7 @@ main:
 
 	STR r5, [r1, #52]
 	STR r6, [r1, #56]
-	STR r7, [r1, #64]
+	STR r7, [r1, #60]
 
 
 	BL timerInit @initialize interrupts and timer 0
@@ -119,11 +119,14 @@ saveRegisters:
 	ADD r0, r0, #4
 
 	STMIA r0!, {r1-r12}
-	STMIA r0!, {lr, spsr}	@ pc e cpsr do programa principal
+
+	MOV r1, lr
+	MRS r2, spsr
+	STMIA r0!, {r1, r2}	@ pc e cpsr do programa principal
 	
 	MRS r1, cpsr   		 				@ salvando o modo corrente em R0
 	MSR cpsr_ctl, #0b11010011 @ alterando o modo para supervisor
-	STMIA r0!, {lr, sp} 			@ lr e sp do programa principal
+	STMIA r0!, {sp, lr} 			@ lr e sp do programa principal
 	MSR cpsr, r1 							@ volta para o modo anterior
 
 	B saveRegistersReturn
@@ -134,9 +137,9 @@ loadRegisters:
 	MRS r3, cpsr
 	MSR cpsr_ctl, #0b11010011 				@ alterando o modo para supervisor
 	LDR r2, [r0, #60]
-	MOV lr, r2
-	LDR r2, [r0, #64]
 	MOV sp, r2
+	LDR r2, [r0, #64]
+	MOV lr, r2
 	MSR cpsr, r3
 
 	LDR r1, [r0, #56]
