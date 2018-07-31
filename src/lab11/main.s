@@ -39,6 +39,8 @@ IRQHandler:
 
 	B saveRegisters
 saveRegistersReturn:
+	@ r0 - r12, pc, cpsr, sp,lr
+
 	LDR r0, currentProcess
 	LDR r1, nextProcess
 	STR r1, currentProcess
