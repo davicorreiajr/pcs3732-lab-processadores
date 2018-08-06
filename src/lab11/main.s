@@ -37,9 +37,22 @@ IRQHandler:
 	@ SUB lr, lr, #4
 	@ STMFD sp!, {R0-R12, lr}
 
-	B saveRegisters
-saveRegistersReturn:
-	@ r0 - r12, pc, cpsr, sp,lr
+	SUB lr, lr, #4
+	STR r0, currentProcess
+
+	LDR r0, currentProcess
+	ADD r0, r0, #4
+
+	STMIA r0!, {r1-r12}
+
+	MOV r1, lr
+	MRS r2, spsr
+	STMIA r0!, {r1, r2}	@ pc e cpsr do programa principal
+	
+	MRS r1, cpsr   		 				@ salvando o modo corrente em R0
+	MSR cpsr_ctl, #0b11010011 @ alterando o modo para supervisor
+	STMIA r0!, {sp, lr} 			@ lr e sp do programa principal
+	MSR cpsr, r1 							@ volta para o modo anterior
 
 	LDR r0, currentProcess
 	LDR r1, nextProcess
@@ -64,6 +77,7 @@ saveRegistersReturn:
 	@ LDMFD sp!, {R0-R12, pc}^
 
 main:
+	@ r0 - r12, pc, cpsr, sp,lr
 	LDR r0, =linhaA
 	LDR r1, =linhaB
 	LDR r3, =currentProcess
@@ -114,26 +128,6 @@ timerInit:
 	LDR r1,=0x10 @bit 4 for timer 0 interrupt enable
 	STR r1,[r0]
 	mov pc, lr
-
-saveRegisters:
-	SUB lr, lr, #4
-	STR r0, currentProcess
-
-	LDR r0, currentProcess
-	ADD r0, r0, #4
-
-	STMIA r0!, {r1-r12}
-
-	MOV r1, lr
-	MRS r2, spsr
-	STMIA r0!, {r1, r2}	@ pc e cpsr do programa principal
-	
-	MRS r1, cpsr   		 				@ salvando o modo corrente em R0
-	MSR cpsr_ctl, #0b11010011 @ alterando o modo para supervisor
-	STMIA r0!, {sp, lr} 			@ lr e sp do programa principal
-	MSR cpsr, r1 							@ volta para o modo anterior
-
-	B saveRegistersReturn
 
 loadRegisters:
 	LDR r0, currentProcess
