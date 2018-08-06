@@ -59,13 +59,13 @@ IRQHandler:
 	STR r1, currentProcess
 	STR r0, nextProcess
 
-	LDR r0, TIMER0X
-	MOV r1, #0x0
-	STR r1, [r0]
-
 	LDR r0, INTPND @Carrega o registrador de status de interrupção
 	LDR r0, [r0]
 	TST r0, #0x0010
+
+	LDR r0, TIMER0X
+	MOV r1, #0x0
+	STR r1, [r0]
 
 	B loadRegisters
 	
