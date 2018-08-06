@@ -160,3 +160,9 @@ arm-none-eabi-ld -T test.ld main.o handler.o -o main.elf
 arm-none-eabi-ld -T irqld.ld main.o handler.o -o main.elf
 arm-none-eabi-objcopy -O binary main.elf main.bin
 qemu-system-arm -M versatilepb -m 128M -nographic -s -S -kernel main.bin
+
+
+target remote localhost:1234
+file main.elf
+load
+continue
