@@ -63,6 +63,10 @@ IRQHandler:
 	LDR r0, [r0]
 	TST r0, #0x0010
 
+	BLNE handlerTimer
+	LDMFD sp!, {R0-R12, pc}^
+
+handlerTimer:
 	LDR r0, TIMER0X
 	MOV r1, #0x0
 	STR r1, [r0]
