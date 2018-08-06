@@ -161,6 +161,7 @@ arm-none-eabi-objcopy -O binary main.elf main.bin
 qemu-system-arm -M versatilepb -m 128M -nographic -s -S -kernel main.bin
 
 
+arm-none-eabi-gdb
 target remote localhost:1234
 file main.elf
 load
