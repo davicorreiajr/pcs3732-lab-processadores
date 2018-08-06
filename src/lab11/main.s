@@ -63,7 +63,7 @@ IRQHandler:
 	LDR r0, [r0]
 	TST r0, #0x0010
 
-	BLNE handlerTimer
+	BNE handlerTimer
 	LDMFD sp!, {R0-R12, pc}^
 
 handlerTimer:
