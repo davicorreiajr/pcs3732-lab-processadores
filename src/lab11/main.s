@@ -38,12 +38,16 @@ IRQHandler:
 	@ STMFD sp!, {R0-R12, lr}
 
 	SUB lr, lr, #4
-	STR r0, currentProcess
 
+	STMFD sp!, {r0}
 	LDR r0, currentProcess
 	ADD r0, r0, #4
 
 	STMIA r0!, {r1-r12}
+
+	LDMFD sp!, {r1}
+	LDR r2, currentProcess
+	STR r1, [r2]
 
 	MOV r1, lr
 	MRS r2, spsr
@@ -63,15 +67,16 @@ IRQHandler:
 	LDR r0, [r0]
 	TST r0, #0x0010
 
-	BNE handlerTimer
-	LDMFD sp!, {R0-R12, pc}^
-
-handlerTimer:
-	LDR r0, TIMER0X
-	MOV r1, #0x0
-	STR r1, [r0]
-
+	BLNE handlerTimer
 	B loadRegisters
+	@ LDMFD sp!, {R0-R12, pc}^
+
+@ handlerTimer:
+@ 	LDR r0, TIMER0X
+@ 	MOV r1, #0x0
+@ 	STR r1, [r0]
+
+@ 	B loadRegisters
 	
 	@ LDR r0, INTPND @Carrega o registrador de status de interrupção
 	@ LDR r0, [r0]
@@ -90,7 +95,7 @@ main:
 	STR r1, [r4]
 
 	LDR r5, =p1
-	MRS r6, cpsr
+	MOV r6, #0x01000000000000000000000100010011
 	LDR r7, =stackP1
 
 	STR r5, [r0, #52]
@@ -98,7 +103,7 @@ main:
 	STR r7, [r0, #60]
 
 	LDR r5, =p2
-	MRS r6, cpsr
+	MOV r6, #0x01000000000000000000000100010011
 	LDR r7, =stackP2
 
 	STR r5, [r1, #52]
@@ -118,19 +123,18 @@ main:
 
 
 timerInit:
-	mrs r0, cpsr
-	bic r0,r0,#0x80
-	msr cpsr_c,r0 @enabling interrupts in the cpsr
-	LDR r0, TIMER0C
-	LDR r1, [r0]
-	MOV r1, #0xA0 @enable timer module
+	LDR r0, INTEN
+	LDR r1, =0x10             @bit 4 for timer 0 interrupt enable
 	STR r1, [r0]
 	LDR r0, TIMER0L
-	MOV r1, #0xff @setting timer value
-	STR r1,[r0]
-	LDR r0, INTEN
-	LDR r1,=0x10 @bit 4 for timer 0 interrupt enable
-	STR r1,[r0]
+	LDR r1, =0xff	      @setting timer value
+	STR r1, [r0]
+	LDR r0, TIMER0C
+	MOV r1, #0xE0             @enable timer module
+	STR r1, [r0]
+	mrs r0, cpsr
+	bic r0, r0, #0x80
+	msr cpsr_c,r0             @enabling interrupts in the cpsr
 	mov pc, lr
 
 loadRegisters:
