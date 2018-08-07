@@ -117,6 +117,7 @@ Useful resources from Balau: [a basic example](https://balau82.wordpress.com/201
 
 ```
 eabi-gcc c_entry.c -o c_entry.o
+arm-elf-gcc -S segment.c
 eabi-as startup.s -o startup.o
 eabi-ld -T vector_table.ld c_entry.o startup.o -o program.elf
 eabi-gdb program.elf
