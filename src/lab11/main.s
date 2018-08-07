@@ -113,6 +113,7 @@ enableInterruption:
 	MRS r0, cpsr
 	BIC r0, r0, #0x80
 	MSR cpsr_c, r0       @ enabling interrupts in the cpsr
+	MOV pc, lr
 
 @ handlerTimer:
 @ 	LDR r0, TIMER0X
