@@ -34,9 +34,6 @@ SoftwareInterruptHandler:
 	mov pc, r14 @volta p/ o endereço armazenado em r14
 
 IRQHandler:
-	@ SUB lr, lr, #4
-	@ STMFD sp!, {R0-R12, lr}
-
 	SUB lr, lr, #4
 
 	STMFD sp!, {r0}
@@ -69,7 +66,6 @@ IRQHandler:
 
 	BLNE handlerTimer
 	B loadRegisters
-	@ LDMFD sp!, {R0-R12, pc}^
 
 @ handlerTimer:
 @ 	LDR r0, TIMER0X
@@ -77,13 +73,6 @@ IRQHandler:
 @ 	STR r1, [r0]
 
 @ 	B loadRegisters
-	
-	@ LDR r0, INTPND @Carrega o registrador de status de interrupção
-	@ LDR r0, [r0]
-	@ TST r0, #0x0010 @verifica se é uma interupção de timer
-	@ BLNE handlerTimer @vai para o rotina de tratamento da interupção de timer
-	
-	@ LDMFD sp!, {R0-R12, pc}^
 
 main:
 	@ r0 - r12, pc, cpsr, sp,lr
@@ -114,13 +103,6 @@ main:
 	BL timerInit @initialize interrupts and timer 0
 
 	B p1
-
-	
-@ stop:
-@ 	BL wait
-@ 	BL print_espaco
-	@ b stop
-
 
 timerInit:
 	LDR r0, INTEN
