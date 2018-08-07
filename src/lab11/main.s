@@ -23,7 +23,10 @@ Reset:
 	LDR sp, =0x1000 					@ a pilha do supervisor eh setada 
 	MSR cpsr, r0 							@ volta para o modo anterior
 
-	BL main
+	BL processSetup
+	BL timerInit
+	BL enableInterruption
+	B p1
 	B .
 
 UndefinedHandler:
@@ -40,19 +43,19 @@ IRQHandler:
 	LDR r0, currentProcess	@ carrega currentProcess (&linhaA) em r0
 	ADD r0, r0, #4					@ soma 4, pois em r0[0] (currentProcess) ficará r0, guardado anteriormente
 
-	STMIA r0!, {r1-r12}			@ guarda registradores r1 a r12
+	STMIA r0!, {r1-r12}			@ salva registradores r1 a r12
 
 	LDMFD sp!, {r1}					@ restaura o valor de r0 da pilha em r1, que já está guardado
 	LDR r2, currentProcess	@ carrega currentProcess em r2, que já está guardado
-	STR r1, [r2]						@ guarda o valor de r0
+	STR r1, [r2]						@ salva o valor de r0
 
 	MOV r1, lr
 	MRS r2, spsr
-	STMIA r0!, {r1, r2}			@ pc e cpsr do programa principal
+	STMIA r0!, {r1, r2}			@ salva pc e cpsr do programa principal
 	
 	MRS r1, cpsr   		 				@ salvando o modo corrente em r0
 	MSR cpsr_ctl, #0b11010011 @ alterando o modo para supervisor
-	STMIA r0!, {sp, lr} 			@ sp e lr do programa principal
+	STMIA r0!, {sp, lr} 			@ salva sp e lr do programa principal
 	MSR cpsr, r1 							@ volta para o modo anterior
 
 	LDR r0, currentProcess		@ faz a troca entre currentProcess
@@ -67,14 +70,7 @@ IRQHandler:
 	BLNE handlerTimer	@ vai para 'handlerTimer' se a interrupção é TIMER
 	B loadRegisters		@ carrega os registradores do modo atual
 
-@ handlerTimer:
-@ 	LDR r0, TIMER0X
-@ 	MOV r1, #0x0
-@ 	STR r1, [r0]
-
-@ 	B loadRegisters
-
-main:
+processSetup:
 	@ r0 - r12, pc, cpsr, sp, lr
 	LDR r0, =linhaA
 	LDR r1, =linhaB
@@ -99,8 +95,7 @@ main:
 	STR r6, [r1, #56]					@ para o processo 2
 	STR r7, [r1, #60]
 
-	BL timerInit 		@ inicializa o timer
-	B p1						@ roda o processo 1
+	MOV pc, lr
 
 timerInit:
 	LDR r0, INTEN
@@ -112,10 +107,18 @@ timerInit:
 	LDR r0, TIMER0C
 	MOV r1, #0xE0       @ enable timer module
 	STR r1, [r0]
-	mrs r0, cpsr
-	bic r0, r0, #0x80
-	msr cpsr_c,r0       @ enabling interrupts in the cpsr
-	mov pc, lr
+	MOV pc, lr
+
+enableInterruption:
+	MRS r0, cpsr
+	BIC r0, r0, #0x80
+	MSR cpsr_c, r0       @ enabling interrupts in the cpsr
+
+@ handlerTimer:
+@ 	LDR r0, TIMER0X
+@ 	MOV r1, #0x0
+@ 	STR r1, [r0]
+@ 	MOV pc, lr
 
 loadRegisters:
 	LDR r0, currentProcess			@ carrega linhaA ou linhaB em r0
