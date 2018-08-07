@@ -35,13 +35,16 @@ SoftwareInterruptHandler:
 
 IRQHandler:
 	@ SUB lr, lr, #4
-	@ STMFD sp!, {R0-R12, lr}
+	STMFD sp!, {r1}
+
+	LDR r1, currentProcess
+	STR r0, [r1]
+
+	MOV r0, r1
+	ADD r0, r0, #4
+	LDMFD sp!, {r1}
 
 	SUB lr, lr, #4
-	STR r0, currentProcess
-
-	LDR r0, currentProcess
-	ADD r0, r0, #4
 
 	STMIA r0!, {r1-r12}
 
@@ -90,7 +93,7 @@ main:
 	STR r1, [r4]
 
 	LDR r5, =p1
-	MRS r6, cpsr
+	LDR r6, =0x60000153
 	LDR r7, =stackP1
 
 	STR r5, [r0, #52]
@@ -98,7 +101,7 @@ main:
 	STR r7, [r0, #60]
 
 	LDR r5, =p2
-	MRS r6, cpsr
+	LDR r6, =0x60000153
 	LDR r7, =stackP2
 
 	STR r5, [r1, #52]

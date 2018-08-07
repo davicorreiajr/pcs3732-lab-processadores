@@ -154,10 +154,10 @@ http://infocenter.arm.com/help/topic/com.arm.doc.qrc0001l/QRC0001_UAL.pdf
 
 http://www.davespace.co.uk/arm/introduction-to-arm/conditional.html
 
-arm-none-eabi-as -mcpu=arm926ej-s -g main.s -o main.o
-arm-none-eabi-gcc -c -mcpu=arm926ej-s -g handler.c -o handler.o
-arm-none-eabi-ld -T irqld.ld main.o handler.o -o main.elf
-arm-none-eabi-objcopy -O binary main.elf main.bin
+arm-none-eabi-as -mcpu=arm926ej-s -g main.s -o main.o &&
+arm-none-eabi-gcc -c -mcpu=arm926ej-s -g handler.c -o handler.o &&
+arm-none-eabi-ld -T irqld.ld main.o handler.o -o main.elf &&
+arm-none-eabi-objcopy -O binary main.elf main.bin &&
 qemu-system-arm -M versatilepb -m 128M -nographic -s -S -kernel main.bin
 
 
@@ -166,3 +166,12 @@ target remote localhost:1234
 file main.elf
 load
 continue
+
+PRINTAR NA TELA:
+
+x/FMT ADDRESS: Printa conteudo da memoria. 
+	FMT eh numero, formato e tamanho (ex: x/3xw printa 3 words em hexa).
+	ADDRESS eh endereco de memoria representado por label, $registrador ou numero.
+	Ver help x para mais infos
+	
+print/FMT EXP (ou p/FMT EXP): Printa expressao. Geralmente util para ver valor de registradores.
