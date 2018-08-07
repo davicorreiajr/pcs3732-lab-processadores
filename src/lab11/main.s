@@ -95,7 +95,7 @@ main:
 	STR r1, [r4]
 
 	LDR r5, =p1
-	MOV r6, #0x01000000000000000000000100010011
+	MOV r6, #0x13
 	LDR r7, =stackP1
 
 	STR r5, [r0, #52]
@@ -103,7 +103,7 @@ main:
 	STR r7, [r0, #60]
 
 	LDR r5, =p2
-	MOV r6, #0x01000000000000000000000100010011
+	MOV r6, #0x13
 	LDR r7, =stackP2
 
 	STR r5, [r1, #52]
