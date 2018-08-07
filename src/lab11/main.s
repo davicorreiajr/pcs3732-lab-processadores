@@ -60,10 +60,10 @@ IRQHandler:
 
 	LDR r0, currentProcess		@ faz a troca entre currentProcess
 	LDR r1, nextProcess				@ e nextProcess
-	LDR r2, thirdProcess
+	LDR r2, modification
 	STR r1, currentProcess
 	STR r2, nextProcess
-	STR r0, thirdProcess
+	STR r0, modification
 
 	LDR r0, INTPND 		@ carrega o registrador de status de interrupção
 	LDR r0, [r0]			@ e verifica se é do tipo TIMER
@@ -79,7 +79,7 @@ processSetup:
 	LDR r8, =linhaC
 	LDR r3, =currentProcess
 	LDR r4, =nextProcess
-	LDR r9, =thirdProcess
+	LDR r9, =modification
 	STR r0, [r3]							@ armazena os endereços de linhaA e linhaB
 	STR r1, [r4]							@ em currentProcess e nextProcess
 	STR r8, [r9]							@ em currentProcess e nextProcess
@@ -163,4 +163,4 @@ TIMER0C: .word 0x101E2008 @timer 0 control register
 TIMER0X: .word 0x101E200c @timer 0 clear register
 nextProcess: .word 0x1
 currentProcess: .word 0x1
-thirdProcess: .word 0x1
+modification: .word 0x1
