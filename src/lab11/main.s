@@ -23,12 +23,6 @@ Reset:
 	LDR sp, =supervisorStack 	@ a pilha do supervisor eh setada 
 	MSR cpsr, r0 							@ volta para o modo anterior
 
-	@setando os sp do abort
-	MRS r0, cpsr    					@ salvando o modo corrente em R0
-	MSR cpsr_ctl, #0b11010111 @ alterando o modo para abort - o SP eh automaticamente chaveado ao chavear o modo
-	LDR sp, =abortStack 				@ a pilha do supervisor eh setada 
-	MSR cpsr, r0 							@ volta para o modo anterior
-
 	BL processSetup
 	BL timerInit
 	BL enableInterruption
@@ -107,7 +101,7 @@ processSetup:
 	STR r7, [r1, #60]
 
 	LDR r5, =p3								@ pc do processo 3
-	MOV r6, #0x17							@ cpsr do processo 3
+	MOV r6, #0x13							@ cpsr do processo 3
 	LDR r7, =stackP3					@ sp do processo 3
 
 	STR r5, [r8, #52]					@ armazena os valores inicias necessários

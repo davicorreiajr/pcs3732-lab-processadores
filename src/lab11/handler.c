@@ -35,5 +35,5 @@ void p2() {
 }
 
 void p3() {
-    while(1) print_uart0("3");
+    while(1) print_uart0("c-2");
 }
