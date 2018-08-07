@@ -14,7 +14,7 @@ Reset:
 	@setando os valores de IRQ
 	MRS r0, cpsr    @ salvando o modo corrente em R0
 	MSR cpsr_ctl, #0b11010010 @ alterando o modo para IRQ - o SP eh automaticamente chaveado ao chavear o modo
-	LDR sp, =0x2000 @ a pilha de IRQ eh setada 
+	LDR sp, =0x3000 @ a pilha de IRQ eh setada 
 	MSR cpsr, r0 @ volta para o modo anterior
 
 	@setando os valores de supervisor
@@ -59,8 +59,10 @@ IRQHandler:
 
 	LDR r0, currentProcess
 	LDR r1, nextProcess
+	LDR r2, thirdProcess
 	STR r1, currentProcess
-	STR r0, nextProcess
+	STR r2, nextProcess
+	STR r0, thirdProcess
 
 	LDR r0, INTPND @Carrega o registrador de status de interrupção
 	LDR r0, [r0]
@@ -87,10 +89,13 @@ main:
 	@ r0 - r12, pc, cpsr, sp,lr
 	LDR r0, =linhaA
 	LDR r1, =linhaB
+	LDR r2, =linhaC
 	LDR r3, =currentProcess
 	LDR r4, =nextProcess
+	LDR r8, =thirdProcess
 	STR r0, [r3]
 	STR r1, [r4]
+	STR r2, [r8]
 
 	LDR r5, =p1
 	LDR r6, =0x60000153
@@ -108,6 +113,13 @@ main:
 	STR r6, [r1, #56]
 	STR r7, [r1, #60]
 
+	LDR r5, =p3
+	LDR r6, =0x60000153
+	LDR r7, =stackP3
+
+	STR r5, [r2, #52]
+	STR r6, [r2, #56]
+	STR r7, [r2, #60]
 
 	BL timerInit @initialize interrupts and timer 0
 
@@ -121,20 +133,19 @@ main:
 
 
 timerInit:
-	mrs r0, cpsr
-	bic r0,r0,#0x80
-	msr cpsr_c,r0 @enabling interrupts in the cpsr
-	LDR r0, TIMER0C
-	LDR r1, [r0]
-	MOV r1, #0xA0 @enable timer module
-	STR r1, [r0]
-	LDR r0, TIMER0L
-	MOV r1, #0xff @setting timer value
-	STR r1,[r0]
 	LDR r0, INTEN
-	LDR r1,=0x10 @bit 4 for timer 0 interrupt enable
-	STR r1,[r0]
-	mov pc, lr
+ 	LDR r1,=0x10 @bit 4 for timer 0 interrupt enable
+ 	STR r1,[r0]
+ 	LDR r0, TIMER0L
+ 	LDR r1, =0x8fff @setting timer value
+ 	STR r1,[r0]
+ 	LDR r0, TIMER0C
+ 	MOV r1, #0xE0 @enable timer module
+ 	STR r1, [r0]
+ 	mrs r0, cpsr
+ 	bic r0,r0,#0x80
+ 	msr cpsr_c,r0 @enabling interrupts in the cpsr
+ 	mov pc, lr
 
 loadRegisters:
 	LDR r0, currentProcess
@@ -154,6 +165,7 @@ loadRegisters:
 	
 linhaA: .space 68
 linhaB: .space 68
+linhaC: .space 68
 
 INTPND: .word 0x10140000 @Interrupt status register
 INTSEL: .word 0x1014000C @interrupt select register( 0 = irq, 1 = fiq)
@@ -164,3 +176,4 @@ TIMER0C: .word 0x101E2008 @timer 0 control register
 TIMER0X: .word 0x101E200c @timer 0 clear register
 nextProcess: .word 0x1
 currentProcess: .word 0x1
+thirdProcess: .word 0x1
