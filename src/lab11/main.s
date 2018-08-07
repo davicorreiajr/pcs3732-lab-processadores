@@ -105,7 +105,7 @@ timerInit:
 	LDR r1, =0xff	      @ setting timer value
 	STR r1, [r0]
 	LDR r0, TIMER0C
-	MOV r1, #0xE0       @ enable timer module
+	MOV r1, #0xA0       @ enable timer module
 	STR r1, [r0]
 	MOV pc, lr
 
