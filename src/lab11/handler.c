@@ -33,3 +33,7 @@ void p1() {
 void p2() {
     while(1) print_uart0("2");
 }
+
+void p3() {
+    while(1) print_uart0("3");
+}

@@ -23,6 +23,12 @@ Reset:
 	LDR sp, =supervisorStack 	@ a pilha do supervisor eh setada 
 	MSR cpsr, r0 							@ volta para o modo anterior
 
+	@setando os sp do abort
+	MRS r0, cpsr    					@ salvando o modo corrente em R0
+	MSR cpsr_ctl, #0b11010111 @ alterando o modo para abort - o SP eh automaticamente chaveado ao chavear o modo
+	LDR sp, =abortStack 				@ a pilha do supervisor eh setada 
+	MSR cpsr, r0 							@ volta para o modo anterior
+
 	BL processSetup
 	BL timerInit
 	BL enableInterruption
@@ -60,8 +66,10 @@ IRQHandler:
 
 	LDR r0, currentProcess		@ faz a troca entre currentProcess
 	LDR r1, nextProcess				@ e nextProcess
+	LDR r2, thirdProcess
 	STR r1, currentProcess
-	STR r0, nextProcess
+	STR r2, nextProcess
+	STR r0, thirdProcess
 
 	LDR r0, INTPND 		@ carrega o registrador de status de interrupção
 	LDR r0, [r0]			@ e verifica se é do tipo TIMER
@@ -74,10 +82,13 @@ processSetup:
 	@ r0 - r12, pc, cpsr, sp, lr
 	LDR r0, =linhaA
 	LDR r1, =linhaB
+	LDR r8, =linhaC
 	LDR r3, =currentProcess
 	LDR r4, =nextProcess
+	LDR r9, =thirdProcess
 	STR r0, [r3]							@ armazena os endereços de linhaA e linhaB
 	STR r1, [r4]							@ em currentProcess e nextProcess
+	STR r8, [r9]							@ em currentProcess e nextProcess
 
 	LDR r5, =p1								@ pc do processo 1
 	MOV r6, #0x13							@ cpsr do processo 1
@@ -94,6 +105,14 @@ processSetup:
 	STR r5, [r1, #52]					@ armazena os valores inicias necessários
 	STR r6, [r1, #56]					@ para o processo 2
 	STR r7, [r1, #60]
+
+	LDR r5, =p3								@ pc do processo 3
+	MOV r6, #0x17							@ cpsr do processo 3
+	LDR r7, =stackP3					@ sp do processo 3
+
+	STR r5, [r8, #52]					@ armazena os valores inicias necessários
+	STR r6, [r8, #56]					@ para o processo 3
+	STR r7, [r8, #60]
 
 	MOV pc, lr
 
@@ -139,6 +158,7 @@ loadRegisters:
 	
 linhaA: .space 68
 linhaB: .space 68
+linhaC: .space 68
 
 INTPND: .word 0x10140000 	@Interrupt status register
 INTSEL: .word 0x1014000C 	@interrupt select register( 0 = irq, 1 = fiq)
@@ -149,3 +169,4 @@ TIMER0C: .word 0x101E2008 @timer 0 control register
 TIMER0X: .word 0x101E200c @timer 0 clear register
 nextProcess: .word 0x1
 currentProcess: .word 0x1
+thirdProcess: .word 0x1
